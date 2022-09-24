@@ -81,15 +81,15 @@ int export_wav(std::vector<std::vector<double> > channels,
         // Save memory location after writing data
         int end_data = wav.tellp();
 
-        // Go back in file and overwrite "subchunk2_size" with actual sub-chunk size
+        // Go back in file and fill out subchunk2_size placeholder
         wav.seekp(start_data - 4);
         write_as_bytes(wav, end_data - start_data, 4);
 
-        // 4 bytes after the start of the file and overwrite "chunk_size"
+        // Go to 4 bytes after the beginning of the file. Fill out chunk_size placeholder
         wav.seekp(4, ios::beg);
         write_as_bytes(wav, end_data - 8, 4);
     
-    } else {return -1;} // if wav didn't open and associated with this stream object.
+    } else {return -1;} // if wav didn't open and/or didn't associate with this stream object.
 
     return 0;
 }
