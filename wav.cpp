@@ -1,3 +1,8 @@
+/*
+ * THIS IS IMPLEMENTED IN ORDER TO RENDER WAV FILES.
+ * SEE FUNCTION export_wav() FOR PARAMETERS.
+ */
+
 #include <vector>
 #include <cmath>
 #include <iostream>
@@ -33,7 +38,7 @@ void write_as_bytes(ofstream &file, int value, int byte_size) {
  * Generate new wav file from audio data in channels,
  * with specified filename, sample rate and bit rate
  */
-int export_wav(std::vector<std::vector<double> > channels,
+int render_wav(std::vector<std::vector<double> > channels,
                string filename,
                int num_channels = 2,
                int sample_rate = 44100,
@@ -132,6 +137,6 @@ std::vector<std::vector<double> > sine_test(double frequency = 220,
  */
 int main(){
     std::vector<std::vector<double> > test_channels = sine_test();
-    export_wav(test_channels, "test.wav");
+    render_wav(test_channels, "test.wav");
     return 0;
 }
