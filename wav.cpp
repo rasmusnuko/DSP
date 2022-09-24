@@ -5,7 +5,9 @@
 
 using namespace std;
 
-//// See http://soundfile.sapp.org/doc/WaveFormat/
+/*
+ * See http://soundfile.sapp.org/doc/WaveFormat/
+ */
 // Riff chunk
 const string chunk_id = "RIFF";
 const string chunk_size = "----";
@@ -20,16 +22,17 @@ const int audio_format = 1;
 const string subchunk2_id = "data";
 const string subchunk2_size = "----";
 
-
-
-// Writes data to files as bytes, used to write ints to file in wav header.
+/*
+ * Writes data to files as bytes, used to write ints to file in wav header.
+ */
 void write_as_bytes(ofstream &file, int value, int byte_size) {
     file.write(reinterpret_cast<const char*>(&value), byte_size);
 }
 
-
-// Generate new wav file from audio data in channels,
-// with specified filename, sample rate and bit rate
+/*
+ * Generate new wav file from audio data in channels,
+ * with specified filename, sample rate and bit rate
+ */
 int export_wav(std::vector<std::vector<double> > channels,
                string filename,
                int num_channels = 2,
@@ -94,8 +97,9 @@ int export_wav(std::vector<std::vector<double> > channels,
     return 0;
 }
 
-
-// Generate test audio data of a sine wave
+/*
+ * Generate test audio data of a sine wave
+ */
 std::vector<std::vector<double> > sine_test(double frequency = 220,
                                             int duration = 2,
                                             int sample_rate = 44100)
@@ -123,11 +127,11 @@ std::vector<std::vector<double> > sine_test(double frequency = 220,
     return channels;
 }
 
+/*
+ * Generate test audio data and write to wav file
+ */
 int main(){
-    // Generate test audio data
     std::vector<std::vector<double> > test_channels = sine_test();
-
-    // Write test audio data to wav file
     export_wav(test_channels, "test.wav");
     return 0;
 }
