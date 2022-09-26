@@ -2,11 +2,12 @@
  * THIS IS IMPLEMENTED IN ORDER TO RENDER WAV FILES.
  * SEE FUNCTION export_wav() FOR PARAMETERS.
  */
-
 #include <vector>
 #include <cmath>
 #include <iostream>
 #include <fstream>
+
+#include "source.h"
 
 using namespace std;
 
@@ -38,18 +39,14 @@ void write_as_bytes(ofstream &file, int value, int byte_size) {
  * Generate new wav file from audio data in channels,
  * with specified filename, sample rate and bit rate
  */
-int render_wav(std::vector<std::vector<double> > channels,
-               string filename,
-               int num_channels = 2,
-               int sample_rate = 44100,
-               int bit_rate = 16)
+int render_wav(Source source, string filename)
 {
     // Open new wav file
     ofstream wav;
     wav.open(filename, ios::binary);
 
-    int byte_rate = sample_rate * num_channels * (subchunk1_size / 8);
-    int block_allign = num_channels * (subchunk1_size / 8);
+    int byte_rate = source.sample_rate * source.num_channels * (subchunk1_size / 8);
+    int block_allign = source.num_channels * (subchunk1_size / 8);
 
     // Write wav header to file
     if (wav.is_open()) {
@@ -62,11 +59,11 @@ int render_wav(std::vector<std::vector<double> > channels,
         wav << subchunk1_id;
         write_as_bytes(wav, subchunk1_size, 4);
         write_as_bytes(wav, audio_format, 2);
-        write_as_bytes(wav, num_channels, 2);
-        write_as_bytes(wav, sample_rate, 4);
+        write_as_bytes(wav, source.num_channels, 2);
+        write_as_bytes(wav, source.sample_rate, 4);
         write_as_bytes(wav, byte_rate, 4);
         write_as_bytes(wav, block_allign, 2);
-        write_as_bytes(wav, bit_rate, 2);
+        write_as_bytes(wav, source.bit_depth, 2);
         
         // Data sub-chunk
         wav << subchunk2_id;
@@ -79,10 +76,10 @@ int render_wav(std::vector<std::vector<double> > channels,
         int write_size = 2; // bytes
         int increment = write_size * 8;
         // Iterate through channel
-        for (int i = 0; i < channels[0].size() ; ++i){
+        for (int i = 0; i < source.channels[0].size() ; ++i){
             // Alternate between channels
-            for (int c = 0; c < channels.size(); ++c){
-                write_as_bytes(wav, channels[c][i], write_size);
+            for (int c = 0; c < source.num_channels; ++c){
+                write_as_bytes(wav, source.channels[c][i], write_size);
             }
         }
 
@@ -105,38 +102,47 @@ int render_wav(std::vector<std::vector<double> > channels,
 /*
  * Generate test audio data of a sine wave
  */
-std::vector<std::vector<double> > sine_test(double frequency = 220,
-                                            int duration = 2,
-                                            int sample_rate = 44100)
-{
+Source sine_test(int num_channels = 2, double frequency = 220, int duration = 2){
+    // Make new source and reserve memory
+    Source source;
+    printf("Sine source generated\n");
+    source.num_channels = num_channels;
+    printf("Source num channels: %i\n", source.num_channels);
+    printf("Source allocated Cs: %lu\n", source.channels.size());
+    printf("Source sample rate:  %i\n", source.sample_rate);
+    printf("Source bit depth:    %i\n", source.num_channels);
+    int total_samples = duration * source.sample_rate;
+    for (int c = 0; c < source.num_channels; ++c){
+      source.channels[c].reserve(total_samples);
+    }
+    
+    printf("Memory allocated, samples pr channel %lu\n", source.channels[0].size());
+    
+
     // Sine wave
-    int max_amplitude = 32760;
-    std::vector<double> channel0;
-    std::vector<double> channel1;
-    channel0.reserve(duration * sample_rate);
-    channel1.reserve(duration * sample_rate);
-    for(int i = 0; i < sample_rate * duration; i++){
-        // Respect max amplitude
-        double amplitude = ((double)i / sample_rate) * max_amplitude;
-        // value = sine[i]
-        double value = sin((2 * 3.14159 * i * frequency) / sample_rate);
-        channel0.push_back(amplitude * value / 2);
-        channel1.push_back((max_amplitude - amplitude) * value);
+    int max_amplitude = pow(2, source.bit_depth - 1) - 1;
+    for(int i = 0; i < total_samples; i++){
+        double amplitude = ((double)i / source.sample_rate) * max_amplitude;
+        double value = sin((2 * 3.14159 * i * frequency) / source.sample_rate);
+        // Write to all channels
+        for (int c = 0; c < source.num_channels; ++c){
+          source.channels[c].push_back(amplitude * value / 2);
+        }
     }
 
-    // Channels 2d matrix
-    std::vector<std::vector<double> > channels;
-    channels.push_back(channel0);
-    channels.push_back(channel1);
-
-    return channels;
+    return source;
 }
 
 /*
  * Generate test audio data and write to wav file
  */
 int main(){
-    std::vector<std::vector<double> > test_channels = sine_test();
-    render_wav(test_channels, "test.wav");
+    printf("Entered main\n");
+    Source sine = sine_test();
+    Source copy = copy_source(sine);
+    sine.num_channels = 4;
+    printf("copy num_channels: %i\n", copy.num_channels);
+    render_wav(sine, "sine.wav");
+    printf("Created sine.wav\n");
     return 0;
 }
