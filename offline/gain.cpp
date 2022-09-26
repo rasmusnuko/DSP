@@ -1,15 +1,16 @@
 #include <vector>
 
-std::vector<std::vector<double> > gain(std::vector<std::vector<double> > channels, double gain){
-  num_channels = channels.size();
+#include "../source.h"
+
+using namespace std;
+
+Source gain(Source source, double gain){
+  Source result = source;
   // For each channel in input
-  for (int c = 0, c < num_channels, ++c){
-    // For each sample in channel
-    for (int i = 0, i < channels[c].size(); ++i){
-      // Multiply sample_{i} by gain
-      channels[c][i] *= gain;
-    }
+  for (int c = 0, c < result.num_channels, ++c){
+    vector<double> chan = result.channels[c];
+    for_each(chan.begin(), chan.end(), [](double i){ i *= gain; })
   }
 
-  return channels;
+    return result;
 }

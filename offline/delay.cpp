@@ -1,15 +1,21 @@
 #include <vector>
+#include <cmath>
 
-std::vector<std::vector<double> > delay(std::vector<std::vector<double> > channels, int delay_amount){
-  num_channels = channels.size();
-  // For each channel in input
-  for (int c = 0; c < num_channels; c++){
-    // Extend channel so that it can fit the delay after original signal
-    channels.resize(channels[c].size() + delay_amount);
-    // For each sample_{i} where i >= delay_amount, add value from sample_{i - delay_amount}
-    for (int i = delay_amount; i < channels[c].size(); i++){
-      channels[c][i] += channels[c][i-delay_amount];
-    }
+#include "../source.h"
+
+using namespace std;
+
+Source delay(Source source, int delay_amount){
+  Source result = copy_source(source);
+  vector<double> delay = vector<double>(delay_amount, 0);
+  for (int channel = 0; channel < result.num_channels; ++channel){
+    vector<double> v = result.channels[channel];
+    v.insert(v.begin, delay);
   }
-  return channels
+  return result;
+}
+
+Source delay_ms(Source source, double delay_time){
+  int amount_samples = round((delay_time/1000) * source.sample_rate);
+  return delay(source, amount_samples);
 }

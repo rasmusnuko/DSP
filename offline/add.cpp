@@ -1,13 +1,17 @@
 #include <vector>
 
-std::vector<std::vector<double> > add(std::vector<std::vector<std::vector<double> > > multi_channels){
+#include "../source.h"
+
+using namespace std;
+
+Source add(vector<Source> sources){
   // Initialize variables
-  num_sources  = multi_channels.size();
-  num_channels = multi_channels[0].size();
-  num_samples  = multi_channels[0][0].size();
+  num_sources  = sources.size();
+  num_channels = sources[0].num_channels;
+  num_samples  = sources[0].channels[0].size();
 
   // Reserve memory for result vec
-  std::vector<std::vector<double> > result;
+  Source result;
   result.reserve(num_channels);
 
   for (int channel = 0; channel < num_channels; ++channel){
