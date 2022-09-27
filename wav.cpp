@@ -142,7 +142,7 @@ int main(){
     Source copy = copy_source(sine);
     sine.num_channels = 4;
     printf("copy num_channels: %i\n", copy.num_channels);
-    render_wav(sine, "sine.wav");
+    render_wav(copy, "sine.wav");
     printf("Created sine.wav\n");
     return 0;
 }
