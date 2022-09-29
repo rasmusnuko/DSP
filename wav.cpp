@@ -100,49 +100,24 @@ int render_wav(Source source, string filename)
 }
 
 /*
- * Generate test audio data of a sine wave
+ * Load a wav into a Source object
  */
-Source sine_test(int num_channels = 2, double frequency = 220, int duration = 2){
-    // Make new source and reserve memory
-    Source source;
-    printf("Sine source generated\n");
-    source.num_channels = num_channels;
-    printf("Source num channels: %i\n", source.num_channels);
-    printf("Source allocated Cs: %lu\n", source.channels.size());
-    printf("Source sample rate:  %i\n", source.sample_rate);
-    printf("Source bit depth:    %i\n", source.num_channels);
-    int total_samples = duration * source.sample_rate;
-    for (int c = 0; c < source.num_channels; ++c){
-      source.channels[c].reserve(total_samples);
-    }
-    
-    printf("Memory allocated, samples pr channel %lu\n", source.channels[0].size());
-    
+Source load_wav(string filename, int num_channels, int sample_rate, int bit_depth){
+  Source source;
+  source.num_channels = num_channels;
+  source.sample_rate = sample_rate;
+  source.bit_depth = bit_depth;
 
-    // Sine wave
-    int max_amplitude = pow(2, source.bit_depth - 1) - 1;
-    for(int i = 0; i < total_samples; i++){
-        double amplitude = ((double)i / source.sample_rate) * max_amplitude;
-        double value = sin((2 * 3.14159 * i * frequency) / source.sample_rate);
-        // Write to all channels
-        for (int c = 0; c < source.num_channels; ++c){
-          source.channels[c].push_back(amplitude * value / 2);
-        }
-    }
-
-    return source;
+  return source;
 }
 
 /*
  * Generate test audio data and write to wav file
  */
 int main(){
-    printf("Entered main\n");
     Source sine = sine_test();
-    Source copy = copy_source(sine);
-    sine.num_channels = 4;
-    printf("copy num_channels: %i\n", copy.num_channels);
-    render_wav(copy, "sine.wav");
-    printf("Created sine.wav\n");
+    string filename = "sine.wav";
+    render_wav(sine, filename);
+    printf("Created %s\n", filename.c_str());
     return 0;
 }
