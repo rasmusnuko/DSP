@@ -1,6 +1,6 @@
 #include <vector>
 
-#include "../source.h"
+#include "../source.cpp"
 
 using namespace std;
 
