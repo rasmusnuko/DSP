@@ -9,7 +9,7 @@
 #include <stdlib.h>
 
 #include "source.cpp"
-#include "sinewave.cpp"
+#include "waveforms.cpp"
 
 using namespace std;
 
