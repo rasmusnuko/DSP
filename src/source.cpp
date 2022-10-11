@@ -59,7 +59,7 @@ class Source{
      */
     void append(int channel, vector<float> data){
       vector<float>::iterator channel_end = this->channels[channel].end();
-      this->channels[channel].insert(channel_end, data);
+      this->channels[channel].insert(channel_end, data.begin(), data.end());
     }
 
     /*
@@ -118,7 +118,7 @@ Source operator*(Source u, Source v){
           index_sum += u.channels[c][i - j] * v.channels[c][j];
         }
       }
-      result.insert(c, index_sum);
+      result.append(c, index_sum);
     }
   }
   return result;
@@ -140,7 +140,7 @@ Source operator*(Source u, vector<float> v){
           index_sum += u.channels[c][i - j] * v[j];
         }
       }
-      result.insert(c, index_sum);
+      result.append(c, index_sum);
     }
   }
   return result;
