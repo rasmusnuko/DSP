@@ -24,6 +24,14 @@ class Source{
       }
     }
 
+    void replace(int channel, vector<float> data){
+      this->channels[channel] = data;
+    }
+
+    void insert(int channel, float data){
+      this->channels[channel].push_back(data);
+    }
+
     /*
      * Update the amount of memory for each channel in source
      */
@@ -73,13 +81,13 @@ Source operator*(Source u, Source v){
 
   for (int c = 0; c < result.num_channels; ++c){
     for (int i = 0; i < result_size; ++i){
-      int index_sum = 0;
+      float index_sum = 0;
       for (int j = 0; j < v.channels[c].size(); ++j){
         if (i - j >= 0){
           index_sum += u.channels[c][i - j] * v.channels[c][j];
         }
       }
-      result.channels[c].push_back(index_sum);
+      result.insert(c, index_sum);
     }
   }
   return result;
@@ -95,13 +103,13 @@ Source operator*(Source u, vector<int> v){
 
   for (int c = 0; c < result.num_channels; ++c){
     for (int i = 0; i < result_size; ++i){
-      int index_sum = 0;
+      float index_sum = 0;
       for (int j = 0; j < v.size(); ++j){
         if (i - j >= 0){
           index_sum += u.channels[c][i - j] * v[j];
         }
       }
-      result.channels[c].push_back(index_sum);
+      result.insert(c, index_sum);
     }
   }
   return result;

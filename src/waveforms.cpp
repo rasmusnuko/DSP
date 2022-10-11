@@ -33,7 +33,7 @@ Source sine(float hz, int duration = 2, int sample_rate = 44100){
 
   for (int i = 0; i < duration_samples; ++i){
     for (int channel = 0; channel < result.num_channels; ++channel){
-      result.channels[channel].push_back(sin(2 * M_PI * phasor[i]));
+      result.insert(channel, sin(2 * M_PI * phasor[i]));
     }
   }
 
@@ -50,7 +50,7 @@ Source sawtooth(float hz, int duration =2, int sample_rate = 44100){
 
   for (int i = 0; i < duration_samples; ++i){
     for (int channel = 0; channel < result.num_channels; ++channel){
-      result.channels[channel].push_back( (phasor[i] * 2 ) - 1 );
+      result.insert(channel, (phasor[i] * 2 ) - 1);
     }
   }
 
