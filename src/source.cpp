@@ -1,10 +1,10 @@
 /*
- * SOURCE is the implementation of a sound source.
+ * Source objects are the main thing in this DSP toy implementation.
+ * SOURCE.CPP is the implementation of a sound source.
  * A source will have a number of channels, i.e. left and right channels.
  * A source will have a sample rate, i.e. 44100hz.
  * A source will have a bit depth, i.e. 16bits per sample.
  *
- * Source objects are the main thing in this DSP toy implementation.
  * WAV.CPP will allow us to load a wav file into a Source object and
  * export a Source object to a wav file.
  *
