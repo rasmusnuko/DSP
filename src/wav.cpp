@@ -151,7 +151,7 @@ Source load_wav(string filepath){
   for (int s = 0; s < num_samples; ++s){
     fread(&int_value, (result.bit_depth / 8), 1, wav);
     float_value = int_value / max_amplitude;
-    result.insert( (s % result.num_channels), float_value);
+    result.append( (s % result.num_channels), float_value);
     if (s < 200){
       printf("%.4f\t", result.channels[0][s]);
     }

@@ -24,12 +24,26 @@ class Source{
       }
     }
 
+    /*
+     * Replace a channel with another vector
+     */
     void replace(int channel, vector<float> data){
       this->channels[channel] = data;
     }
 
-    void insert(int channel, float data){
+    /*
+     * Append data point onto channel
+     */
+    void append(int channel, float data){
       this->channels[channel].push_back(data);
+    }
+
+    /*
+     * Append data vector onto channel
+     */
+    void append(int channel, vector<float> data){
+      vector<float>::iterator channel_end = this->channels[channel].end();
+      this->channels[channel].insert(channel_end, data);
     }
 
     /*
