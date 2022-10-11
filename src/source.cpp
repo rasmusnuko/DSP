@@ -94,6 +94,7 @@ class Source{
     
       return result;
     }
+
 };
 
 
@@ -126,7 +127,7 @@ Source operator*(Source u, Source v){
 /*
  * Convolution of Source and vector<int>
  */
-Source operator*(Source u, vector<int> v){
+Source operator*(Source u, vector<float> v){
   Source result = Source(u.num_channels, u.sample_rate, u.bit_depth);
   int result_size = u.channels[0].size() + v.size() - 1;
   result.reserve_channels_mem(result_size);
@@ -148,7 +149,7 @@ Source operator*(Source u, vector<int> v){
 /*
  * Convolution of vector<int> and Source
  */
-Source operator*(vector<int> u, Source v){
+Source operator*(vector<float> u, Source v){
   return v * u; 
 }
 #endif
