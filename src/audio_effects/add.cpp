@@ -14,16 +14,16 @@
     Source result;
     result.reserve(num_channels);
 
-    for (int channel = 0; channel < num_channels; ++channel){
-      // New vector for new channel
-      vector<float> new_channel;
-      // Reserve memory for result vec<vec>
-      new_channel.reserve(num_sources * num_samples)
+  for (int channel = 0; channel < num_channels; ++channel){
+    // New vector for new channel
+    vector<float> new_channel;
+    // Reserve memory for result vec<vec>
+    new_channel.reserve(num_sources * num_samples)
 
-      // Concat sources' channels in result vector
-      for (int source = 0; source < num_sources; ++source){
-        vector<float> source_channel = multi_channels[source][channel];
-      new_channel.insert(end(new_channel), begin(source_channel), end(source_channel));
+    // Concat sources' channels in result vector
+    for (int source = 0; source < num_sources; ++source){
+      vector<float> source_channel = multi_channels[source][channel];
+    new_channel.insert(end(new_channel), begin(source_channel), end(source_channel));
     }
 
     // Add samples together corresponding to:

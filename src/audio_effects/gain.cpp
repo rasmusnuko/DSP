@@ -12,5 +12,5 @@ Source gain(Source source, float gain){
     for_each(chan.begin(), chan.end(), [](float i){ i *= gain; })
   }
 
-    return result;
+  return result;
 }
