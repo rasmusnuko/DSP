@@ -135,5 +135,5 @@ Source operator*(Source u, vector<int> v){
 Source operator*(vector<int> u, Source v){
   return v * u; 
 }
-
 #endif
+

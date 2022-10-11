@@ -171,6 +171,5 @@ int main(){
   string read_filepath = "read_sine.wav";
   render_wav(read_sine, read_filepath);
 
-
   return 0;
 }
