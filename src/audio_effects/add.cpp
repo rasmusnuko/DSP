@@ -1,43 +1,38 @@
-#include <vector>
-
 #include "../source.cpp"
 
-  using namespace std;
+using namespace std;
 
-  Source add(vector<Source> sources){
-    // Initialize variables
-    num_sources  = sources.size();
-    num_channels = sources[0].num_channels;
-    num_samples  = sources[0].channels[0].size();
+Source add(vector<Source> sources){
+  // Initial information
+  int num_sources  = sources.size();
+  int num_channels = sources[0].num_channels;
+  int num_samples  = sources[0].channels[0].size();
 
-    // Reserve memory for result vec
-    Source result;
-    result.reserve(num_channels);
+  // Result source
+  Source result;
+  result.channels.reserve(num_channels);
 
+  // result[channel][sample] is the sum of all values
+  // across sources with that channel and sample.
   for (int channel = 0; channel < num_channels; ++channel){
-    // New vector for new channel
-    vector<float> new_channel;
-    // Reserve memory for result vec<vec>
-    new_channel.reserve(num_sources * num_samples)
-
-    // Concat sources' channels in result vector
+    float value = 0;
     for (int source = 0; source < num_sources; ++source){
-      vector<float> source_channel = multi_channels[source][channel];
-    new_channel.insert(end(new_channel), begin(source_channel), end(source_channel));
+      for (int sample = 0; sample < num_samples; ++sample){
+        value += sources[source].channels[channel][sample];
+      }
     }
 
-    // Add samples together corresponding to:
-    // result_{i} = sum_{s in sources} multi_channels[s][c][i], for c in channel, for i in samples
-    for (int sample = num_samples; sample < result.size(); ++sample){
-      new_channel[samples % num_samples] += new_channel[sample];
-    }
-
-    // Truncate result to only fit num samples
-    new_channel.resize(num_samples);
-
-    // Add new channel to result
-    result.push_back(new_channel);
+    result.append(channel, value);
   }
-
+  
   return result;
+}
+
+
+Source add(Source a, Source b){
+  vector<Source> sources;
+  sources.push_back(a);
+  sources.push_back(b);
+
+  return add(sources);
 }

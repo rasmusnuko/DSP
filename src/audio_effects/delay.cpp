@@ -8,9 +8,9 @@ Source delay(Source source, int delay_amount){
   Source result;
   vector<float> delay = vector<float>(delay_amount, 0);
   for (int channel = 0; channel < result.num_channels; ++channel){
-    vector<float> result_vector = result.channels[channel];
-    v.insert(v.begin, delay);
-    result.replace(channel, result_vector);
+    vector<float> v = result.channels[channel];
+    v.insert(v.begin(), delay.begin(), delay.end());
+    result.replace(channel, v);
   }
   return result;
 }
