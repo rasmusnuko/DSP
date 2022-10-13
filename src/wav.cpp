@@ -9,7 +9,6 @@
 #include <stdlib.h>
 
 #include "source.cpp"
-#include "waveforms.cpp"
 
 using namespace std;
 
@@ -160,16 +159,3 @@ Source load_wav(string filepath){
   return result;
 }
 
-/*
- * Generate test audio data and write to wav file
- */
-int main(){
-  Source sine = ::sine(220, 2, 44100);    // 220hz, 2 seconds, 44100hz sampling rate
-  string filepath = "sine.wav";
-  render_wav(sine, filepath);
-  Source read_sine = load_wav("sine.wav");
-  string read_filepath = "read_sine.wav";
-  render_wav(read_sine, read_filepath);
-
-  return 0;
-}
