@@ -155,5 +155,7 @@ vector<float> gen_square_table(){
 
 Source square(float frequency, float duration, int sample_rate = 44100, int num_channels = 2){
   vector<float> square_table = gen_square_table();
+
+
   return gen_source(square_table, frequency, duration, sample_rate, num_channels);
 }

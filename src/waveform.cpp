@@ -42,7 +42,7 @@ Source sine(float hz, int duration = 2, int sample_rate = 44100){
 }
 
 
-Source sawtooth(float hz, int duration =2, int sample_rate = 44100){
+Source sawtooth(float hz, int duration = 2, int sample_rate = 44100){
   int duration_samples = duration * sample_rate;
 
   vector<float> phasor = ::phasor(hz, duration, sample_rate);
