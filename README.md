@@ -1,5 +1,7 @@
 # DSP Project
+## WORK IN PROGRESS
 #### C++ implementation of real-time DSP
+
 
 This is to try out somethings I've learned in my Audio Processing course.
 
