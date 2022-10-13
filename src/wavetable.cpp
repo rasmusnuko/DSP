@@ -55,9 +55,8 @@ Source gen_source(vector<float> table,
  * PHASOR
  */
 vector<float> gen_phasor_table(){
-  vector<float> result_vector = vector<float>(0, TABLE_SIZE);
+  vector<float> result_vector;
 
-  float value = 0;
   float increment = 1 / TABLE_SIZE;
   for (int i = 0; i < TABLE_SIZE; ++i){
     result_vector[i] = i * increment;
@@ -76,13 +75,11 @@ Source phasor(float frequency, float duration, int sample_rate = 44100, int num_
  * SAWTOOTH
  */
 vector<float> gen_sawtooth_table(){
-  vector<float> result_vector = vector<float>(0, TABLE_SIZE);
+  vector<float> result_vector;
 
-  float value = 0;
-  float increment = 2 / TABLE_SIZE;
+  float increment = 2.0 / TABLE_SIZE;
   for (int i = 0; i < TABLE_SIZE; ++i){
-    result_vector[i] = value - 1; // -1 to 1, instead of 0 to 2.
-    value += increment;
+    result_vector.push_back( (increment * i) - 1 );
   }
 
   return result_vector;
@@ -94,16 +91,14 @@ Source sawtooth(float frequency, float duration, int sample_rate = 44100, int nu
 }
 
 /*
- * SINE
+ * SINEWAVE
  */
 vector<float> gen_sine_table(){
-  vector<float> result_vector = vector<float>(0, TABLE_SIZE);
+  vector<float> result_vector;
 
   float increment = (2 * M_PI) / TABLE_SIZE;
-  float value = 0;
   for (int i = 0; i < TABLE_SIZE; ++i){
-    result_vector.push_back(sin(value));
-    value += increment;
+    result_vector.push_back( sin(i * increment) );
   }
 
   return result_vector;
@@ -119,21 +114,17 @@ Source sinewave(float frequency, float duration, int sample_rate = 44100, int nu
  * TRIANGLE
  */
 vector<float> gen_triangle_table(){
-  vector<float> result_vector = vector<float>(0, TABLE_SIZE);
+  vector<float> result_vector;
 
   float increment = 2 / (TABLE_SIZE * 0.5);
   float value = 0;
   for (int i = 0; i < TABLE_SIZE; ++i){
-    result_vector.push_back(value - 1);
-
-    printf("%i:\t%.4f\n", i, value-1);
-
-    // Update value
     if ( i < (TABLE_SIZE * 0.5) ){
       value += increment;
     } else {
       value -= increment;
     }
+    result_vector.push_back(value - 1);
   }
 
   return result_vector;
@@ -152,7 +143,7 @@ vector<float> gen_square_table(){
   vector<float> result_vector;
 
   for (int i = 0; i < TABLE_SIZE; ++i){
-    if (i < (int) (TABLE_SIZE/2)){
+    if (i < (TABLE_SIZE * 0.5) ){
       result_vector.push_back(1);
     } else {
       result_vector.push_back(-1);
