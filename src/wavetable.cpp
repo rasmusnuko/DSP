@@ -82,6 +82,11 @@ vector<float> gen_sawtooth_table(){
     result_vector.push_back( (increment * i) - 1 );
   }
 
+  // Rotate st. table starts from 0
+  rotate(result_vector.begin(),
+         result_vector.begin() + (TABLE_SIZE / 2),
+         result_vector.end());
+
   return result_vector;
 }
 
@@ -126,6 +131,11 @@ vector<float> gen_triangle_table(){
     }
     result_vector.push_back(value - 1);
   }
+
+  // Rotate st. table starts from 0
+  rotate(result_vector.begin(),
+         result_vector.begin() + (TABLE_SIZE / 4) - 1,
+         result_vector.end());
 
   return result_vector;
 }
