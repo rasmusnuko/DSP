@@ -11,7 +11,7 @@ using namespace std;
 vector<float> phasor(float hz, int duration, int sample_rate){
   float period_samples   = sample_rate / hz;
   int duration_samples = sample_rate * duration;
-
+  
   vector<float> result;
   result.reserve(duration * sample_rate);
 
