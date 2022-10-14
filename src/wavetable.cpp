@@ -1,7 +1,3 @@
-/*
- * Sine generator from phasor
- */
-
 #define TABLE_SIZE 256
 
 #include <cmath>
